@@ -39,5 +39,9 @@ class _MyAppState extends State<MyApp> {
   @override
   void dispose() {
     super.dispose();
+    /*sl.unregister(
+      instance: _openWeatherBloc,
+      disposingFunction: _openWeatherBloc.dispose,
+    );*/
   }
 }
