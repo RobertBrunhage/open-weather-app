@@ -26,6 +26,9 @@ dependencies:
   http: ^0.12.0+4
   flutter_dotenv: ^2.1.0
 
+  # TESTING
+  mockito: ^4.1.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

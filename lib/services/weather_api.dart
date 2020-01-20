@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
@@ -31,8 +32,7 @@ class WeatherApi implements BaseWeatherApi {
       print(weather.main.temp);
       return weather;
     } else {
-      print('failed getting the data');
-      throw Exception();
+      throw HttpException("Failed getting the data");
     }
   }
 }

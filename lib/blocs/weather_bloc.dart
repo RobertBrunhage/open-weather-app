@@ -15,18 +15,18 @@ class WeatherBloc implements BaseWeatherBloc {
     this._weatherApi = weatherApi;
   }
 
-  WeatherApi _weatherApi;
+  BaseWeatherApi _weatherApi;
 
   BehaviorSubject<OpenWeather> _weatherSubject = BehaviorSubject<OpenWeather>();
   ValueStream<OpenWeather> get weatherObservable => _weatherSubject.stream;
 
   @override
-  void fetchWeatherFromCity(String city) async {
+  Future<void> fetchWeatherFromCity(String city) async {
     try {
       var openWeather = await _weatherApi.fetchWeatherFromCity(city);
       _weatherSubject.sink.add(openWeather);
     } catch (e) {
-      print(e);
+      _weatherSubject.sink.addError(e);
     }
   }
 
