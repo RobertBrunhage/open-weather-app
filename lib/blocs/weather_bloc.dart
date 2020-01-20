@@ -6,18 +6,18 @@ abstract class BaseWeatherBloc {
   void fetchWeatherFromCity(String city);
 
   ValueStream<OpenWeather> get weatherObservable;
+
+  void dispose();
 }
 
 class WeatherBloc implements BaseWeatherBloc {
-  WeatherApi _weatherApi;
-  BehaviorSubject<OpenWeather> _weatherSubject;
-
   WeatherBloc(BaseWeatherApi weatherApi) {
     this._weatherApi = weatherApi;
-
-    _weatherSubject = BehaviorSubject<OpenWeather>();
   }
 
+  WeatherApi _weatherApi;
+
+  BehaviorSubject<OpenWeather> _weatherSubject = BehaviorSubject<OpenWeather>();
   ValueStream<OpenWeather> get weatherObservable => _weatherSubject.stream;
 
   @override
@@ -28,5 +28,10 @@ class WeatherBloc implements BaseWeatherBloc {
     } catch (e) {
       print(e);
     }
+  }
+
+  @override
+  void dispose() {
+    _weatherSubject.close();
   }
 }

@@ -4,7 +4,9 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:open_weather_app/models/weather.dart';
 
-abstract class BaseWeatherApi {
+abstract class Api {}
+
+abstract class BaseWeatherApi implements Api {
   Future<OpenWeather> fetchWeatherFromCity(String city);
 }
 
