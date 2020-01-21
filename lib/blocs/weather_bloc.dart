@@ -1,11 +1,11 @@
-import 'package:open_weather_app/models/weather.dart';
 import 'package:open_weather_app/services/weather_api.dart';
+import 'package:open_weather_app/view_models/weather_view.dart';
 import 'package:rxdart/rxdart.dart';
 
 abstract class BaseWeatherBloc {
   void fetchWeatherFromCity(String city);
 
-  ValueStream<OpenWeather> get weatherObservable;
+  ValueStream<OpenWeatherView> get weatherObservable;
 
   void dispose();
 }
@@ -17,14 +17,14 @@ class WeatherBloc implements BaseWeatherBloc {
 
   BaseWeatherApi _weatherApi;
 
-  BehaviorSubject<OpenWeather> _weatherSubject = BehaviorSubject<OpenWeather>();
-  ValueStream<OpenWeather> get weatherObservable => _weatherSubject.stream;
+  BehaviorSubject<OpenWeatherView> _weatherSubject = BehaviorSubject<OpenWeatherView>();
+  ValueStream<OpenWeatherView> get weatherObservable => _weatherSubject.stream;
 
   @override
   Future<void> fetchWeatherFromCity(String city) async {
     try {
       var openWeather = await _weatherApi.fetchWeatherFromCity(city);
-      _weatherSubject.sink.add(openWeather);
+      _weatherSubject.sink.add(OpenWeatherView(openWeather));
     } catch (e) {
       _weatherSubject.sink.addError(e);
     }

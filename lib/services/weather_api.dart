@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
-import 'package:open_weather_app/models/weather.dart';
+import 'package:open_weather_app/models/open_weather.dart';
 
 abstract class Api {}
 
