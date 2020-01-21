@@ -1,11 +1,13 @@
 // Import the test package and Counter class
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:open_weather_app/blocs/weather_bloc.dart';
-import 'package:open_weather_app/models/weather.dart';
+import 'package:open_weather_app/models/open_weather.dart';
 import 'package:open_weather_app/services/weather_api.dart';
+import 'package:open_weather_app/view_models/weather_view.dart';
 
 class MockWeatherApi extends Mock implements BaseWeatherApi {}
 
@@ -15,16 +17,20 @@ void main() {
   test('GIVEN city name WHEN fetchWeatherFromCity is called THEN emit OpenWeather', () async {
     // ARRANGE
     final weatherApi = MockWeatherApi();
-    final expected = MockOpenWeather();
-    final bloc = WeatherBloc(weatherApi);
+    final mockOpenWeather = MockOpenWeather();
 
-    when(weatherApi.fetchWeatherFromCity("")).thenAnswer((_) => Future.value(expected));
+    final weatherBloc = WeatherBloc(weatherApi);
+    final expected = OpenWeatherView(mockOpenWeather);
+
+    when(weatherApi.fetchWeatherFromCity("")).thenAnswer((_) => Future.value(mockOpenWeather));
 
     //ACT
-    await bloc.fetchWeatherFromCity("");
+    scheduleMicrotask(() {
+      weatherBloc.fetchWeatherFromCity("");
+    });
 
     //VERIFY
-    expectLater(bloc.weatherObservable, emits(expected));
+    expect(weatherBloc.weatherObservable, emits(expected));
   });
 
   test('GIVEN empty name WHEN fetchWeatherFromCity is called THEN emit error', () async {
@@ -35,9 +41,11 @@ void main() {
     when(weatherApi.fetchWeatherFromCity("")).thenThrow(HttpException('Failed getting the data'));
 
     //ACT
-    await bloc.fetchWeatherFromCity("");
+    scheduleMicrotask(() {
+      bloc.fetchWeatherFromCity("");
+    });
 
     //VERIFY
-    await expectLater(bloc.weatherObservable, emitsError(isException));
+    expect(bloc.weatherObservable, emitsError(isException));
   });
 }
