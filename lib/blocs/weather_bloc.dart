@@ -1,3 +1,4 @@
+import 'package:open_weather_app/models/server_response.dart';
 import 'package:open_weather_app/services/weather_api.dart';
 import 'package:open_weather_app/view_models/weather_view.dart';
 import 'package:rxdart/rxdart.dart';
@@ -25,8 +26,10 @@ class WeatherBloc implements BaseWeatherBloc {
     try {
       var openWeather = await _weatherApi.fetchWeatherFromCity(city);
       _weatherSubject.sink.add(OpenWeatherView(openWeather));
-    } catch (e) {
+    } on ServerResponse catch (e) {
       _weatherSubject.sink.addError(e);
+    } catch (e) {
+      print("Something went wrong: $e");
     }
   }
 

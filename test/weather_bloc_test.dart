@@ -1,11 +1,9 @@
-// Import the test package and Counter class
 import 'dart:async';
-import 'dart:io';
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:open_weather_app/blocs/weather_bloc.dart';
 import 'package:open_weather_app/models/open_weather.dart';
+import 'package:open_weather_app/models/server_response.dart';
 import 'package:open_weather_app/services/weather_api.dart';
 import 'package:open_weather_app/view_models/weather_view.dart';
 
@@ -18,8 +16,8 @@ void main() {
     // ARRANGE
     final weatherApi = MockWeatherApi();
     final mockOpenWeather = MockOpenWeather();
-
     final weatherBloc = WeatherBloc(weatherApi);
+
     final expected = OpenWeatherView(mockOpenWeather);
 
     when(weatherApi.fetchWeatherFromCity("")).thenAnswer((_) => Future.value(mockOpenWeather));
@@ -38,7 +36,7 @@ void main() {
     final weatherApi = MockWeatherApi();
     final bloc = WeatherBloc(weatherApi);
 
-    when(weatherApi.fetchWeatherFromCity("")).thenThrow(HttpException('Failed getting the data'));
+    when(weatherApi.fetchWeatherFromCity("")).thenThrow(ServerResponse("", "", ""));
 
     //ACT
     scheduleMicrotask(() {

@@ -17,6 +17,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+
     _weatherBloc = Provider.of<BaseWeatherBloc>(context, listen: false);
     _weatherBloc.fetchWeatherFromCity("Gothenburg");
   }
