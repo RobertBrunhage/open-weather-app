@@ -1,9 +1,9 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:open_weather_app/models/open_weather.dart';
+import 'package:open_weather_app/utils/validate_response.dart';
 
 abstract class Api {}
 
@@ -25,14 +25,12 @@ class WeatherApi implements BaseWeatherApi {
       headers: {"Accept": "application/json"},
     );
 
-    // status code 200 means that we made a successful get
     if (response.statusCode == 200) {
       Map<String, dynamic> weatherJson = json.decode(response.body);
       var weather = OpenWeather.fromJson(weatherJson);
-      print(weather.main.temp);
       return weather;
     } else {
-      throw HttpException("Failed getting the data");
+      throw ValidateResponse.generateException(response);
     }
   }
 }
