@@ -27,11 +27,11 @@ void main() {
       weatherBloc.fetchWeatherFromCity("");
     });
 
-    //VERIFY
+    //ASSERT
     expect(weatherBloc.weatherObservable, emits(expected));
   });
 
-  test('GIVEN empty name WHEN fetchWeatherFromCity is called THEN emit error', () async {
+  test('GIVEN empty name WHEN fetchWeatherFromCity is called THEN emit nothing', () async {
     // ARRANGE
     final weatherApi = MockWeatherApi();
     final bloc = WeatherBloc(weatherApi);
@@ -43,7 +43,7 @@ void main() {
       bloc.fetchWeatherFromCity("");
     });
 
-    //VERIFY
-    expect(bloc.weatherObservable, emitsError(isException));
+    //ASSERT
+    expect(bloc.weatherObservable, emitsInOrder([]));
   });
 }
