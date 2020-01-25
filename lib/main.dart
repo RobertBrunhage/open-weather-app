@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:open_weather_app/blocs/weather_bloc.dart';
 import 'package:open_weather_app/services/weather_api.dart';
-import 'package:open_weather_app/ui/pages/home_page.dart';
+import 'package:open_weather_app/ui/pages/home/home_page.dart';
 import 'package:provider/provider.dart';
 
 class _Holder<T> {
@@ -31,11 +31,11 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
+        title: 'Weather now',
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: HomePage(title: 'Flutter Demo Home Page'),
+        home: HomePage(),
       ),
     );
   }

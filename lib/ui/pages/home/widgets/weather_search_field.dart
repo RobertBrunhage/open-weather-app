@@ -23,12 +23,22 @@ class WeatherSearchField extends StatelessWidget {
           style: customTextStyle(context),
           decoration: InputDecoration(
             hintStyle: customTextStyle(context),
-            prefixIcon: Icon(Icons.search, color: Colors.grey),
+            prefixIcon: Icon(Icons.search, color: Colors.grey, size: 32),
             hintText: _hintText,
             fillColor: Colors.white,
             isDense: true,
             enabledBorder: customBorder(),
             focusedBorder: customBorder(),
+            suffixIcon: StreamBuilder<bool>(
+              stream: _weatherBloc.isLoadingObservable,
+              builder: (context, snapshot) {
+                final isLoading = snapshot.data;
+                if (isLoading == true) {
+                  return CircularProgressIndicator();
+                }
+                return SizedBox();
+              },
+            ),
           ),
         ),
       ),
