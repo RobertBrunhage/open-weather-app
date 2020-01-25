@@ -1,3 +1,4 @@
+import 'package:open_weather_app/models/open_weather.dart';
 import 'package:open_weather_app/models/server_response.dart';
 import 'package:open_weather_app/services/weather_api.dart';
 import 'package:open_weather_app/view_models/weather_view.dart';
@@ -8,6 +9,7 @@ abstract class BaseWeatherBloc {
   void onSearch(String word);
 
   ValueStream<OpenWeatherView> get weatherObservable;
+  ValueStream<bool> get isLoadingObservable;
 
   void dispose();
 }
@@ -23,23 +25,28 @@ class WeatherBloc implements BaseWeatherBloc {
 
   BaseWeatherApi _weatherApi;
 
-  BehaviorSubject<OpenWeatherView> _weatherSubject = BehaviorSubject<OpenWeatherView>();
-  ValueStream<OpenWeatherView> get weatherObservable => _weatherSubject.stream;
+  BehaviorSubject<OpenWeather> _weatherSubject = BehaviorSubject<OpenWeather>();
+  ValueStream<OpenWeatherView> get weatherObservable =>
+      _weatherSubject.stream.map((weather) => OpenWeatherView(weather)).shareValue();
 
   BehaviorSubject<String> _searchSubject = BehaviorSubject<String>();
   ValueStream<String> get _searchObservable => _searchSubject.stream;
 
+  BehaviorSubject<bool> _isLoadingSubject = BehaviorSubject<bool>().shareValueSeeded(false);
+  ValueStream<bool> get isLoadingObservable => _isLoadingSubject.stream;
+
   @override
   Future<void> fetchWeatherFromCity(String city) async {
-    print(city);
+    _isLoadingSubject.sink.add(true);
     try {
       var openWeather = await _weatherApi.fetchWeatherFromCity(city);
-      _weatherSubject.sink.add(OpenWeatherView(openWeather));
-    } on ServerResponse catch (e) {
-      print("Something went wrong: $e");
+      _weatherSubject.sink.add(openWeather);
+    } on ServerResponse catch (serverResponse) {
+      print("ServerResponse: ${serverResponse.message}");
     } catch (e) {
-      print("Something went wrong: $e");
+      print("${e.message}");
     }
+    _isLoadingSubject.sink.add(false);
   }
 
   @override
@@ -51,5 +58,6 @@ class WeatherBloc implements BaseWeatherBloc {
   void dispose() {
     _weatherSubject.close();
     _searchSubject.close();
+    _isLoadingSubject.close();
   }
 }

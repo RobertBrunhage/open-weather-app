@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:open_weather_app/blocs/weather_bloc.dart';
-import 'package:open_weather_app/models/server_response.dart';
-import 'package:open_weather_app/ui/pages/widgets/current_weather.dart';
-import 'package:open_weather_app/ui/pages/widgets/weather_search_field.dart';
+import 'package:open_weather_app/ui/pages/home/widgets/current_weather.dart';
+import 'package:open_weather_app/ui/pages/home/widgets/weather_search_field.dart';
 import 'package:open_weather_app/view_models/weather_view.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({Key key, this.title}) : super(key: key);
-  final String title;
+  HomePage({Key key}) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -37,19 +35,11 @@ class _HomePageState extends State<HomePage> {
             StreamBuilder<OpenWeatherView>(
               stream: _weatherBloc.weatherObservable,
               builder: (context, snapshot) {
-                switch (snapshot.connectionState) {
-                  case ConnectionState.none:
-                    return SizedBox();
-                  case ConnectionState.waiting:
-                    return CircularProgressIndicator();
-                  default:
-                    if (snapshot.hasError) {
-                      ServerResponse response = snapshot.error;
-                      return Text(response.header);
-                    } else {
-                      final openWeather = snapshot.data;
-                      return CurrentWeather(openWeather: openWeather);
-                    }
+                if (snapshot.hasData) {
+                  final openWeather = snapshot.data;
+                  return CurrentWeather(openWeather: openWeather);
+                } else {
+                  return SizedBox();
                 }
               },
             ),
