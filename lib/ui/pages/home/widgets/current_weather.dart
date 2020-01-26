@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:open_weather_app/ui/pages/home/widgets/rotating_snowflake.dart';
+import 'package:open_weather_app/ui/pages/home/widgets/rotating_sun.dart';
 import 'package:open_weather_app/view_models/weather_view.dart';
 
-class CurrentWeather extends StatelessWidget {
+class CurrentWeather extends StatefulWidget {
   const CurrentWeather({
     Key key,
     @required this.openWeather,
@@ -10,46 +12,50 @@ class CurrentWeather extends StatelessWidget {
   final OpenWeatherView openWeather;
 
   @override
+  _CurrentWeatherState createState() => _CurrentWeatherState();
+}
+
+class _CurrentWeatherState extends State<CurrentWeather> {
+  @override
   Widget build(BuildContext context) {
     return FittedBox(
       child: Container(
-        width: 800,
+        width: 740,
         height: 340,
         child: Card(
           elevation: 18,
           child: Padding(
             padding: const EdgeInsets.symmetric(
-              horizontal: 24,
+              horizontal: 84,
               vertical: 24,
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Column(
                       children: <Widget>[
                         Text(
-                          '${openWeather.celcius}',
+                          '${widget.openWeather.celcius}',
                           style: Theme.of(context).textTheme.display4,
                         ),
                         Text(
-                          '${openWeather.farenheit}',
+                          '${widget.openWeather.farenheit}',
                           style: Theme.of(context).textTheme.display1,
                         ),
                       ],
                     ),
-                    Icon(
-                      Icons.wb_sunny,
-                      size: 112,
-                      color: Colors.yellow,
+                    Expanded(
+                      child: SizedBox(),
                     ),
+                    if (widget.openWeather.temperature < 5) RotatingSnowflake() else RotatingSun()
                   ],
                 ),
                 Text(
-                  '${openWeather.generateText()}',
+                  '${widget.openWeather.generateText()}',
                   style: Theme.of(context).textTheme.title.copyWith(
                         color: Colors.grey.shade700,
                         fontWeight: FontWeight.bold,
