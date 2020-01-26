@@ -4,7 +4,7 @@ class OpenWeatherView {
   OpenWeatherView(OpenWeather openWeather) {
     temperature = openWeather?.main?.temp;
     celcius = '${openWeather?.main?.temp}°C';
-    farenheit = '${(openWeather?.main?.temp ?? 0) * 9 / 5 + 32}°F';
+    farenheit = '${((openWeather?.main?.temp ?? 0) * 9 / 5 + 32).toStringAsPrecision(4)}°F';
   }
 
   double temperature;
