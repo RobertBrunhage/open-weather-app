@@ -52,7 +52,7 @@ class WeatherSearchField extends StatelessWidget {
   }
 
   TextStyle customTextStyle(BuildContext context) {
-    return Theme.of(context).textTheme.title.copyWith(
+    return Theme.of(context).textTheme.headline6.copyWith(
           fontWeight: FontWeight.bold,
           color: Colors.grey,
         );

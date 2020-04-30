@@ -40,11 +40,11 @@ class _CurrentWeatherState extends State<CurrentWeather> {
                       children: <Widget>[
                         Text(
                           '${widget.openWeather.celcius}',
-                          style: Theme.of(context).textTheme.display4,
+                          style: Theme.of(context).textTheme.headline1,
                         ),
                         Text(
                           '${widget.openWeather.farenheit}',
-                          style: Theme.of(context).textTheme.display1,
+                          style: Theme.of(context).textTheme.headline4,
                         ),
                       ],
                     ),
@@ -56,7 +56,7 @@ class _CurrentWeatherState extends State<CurrentWeather> {
                 ),
                 Text(
                   '${widget.openWeather.generateText()}',
-                  style: Theme.of(context).textTheme.title.copyWith(
+                  style: Theme.of(context).textTheme.headline6.copyWith(
                         color: Colors.grey.shade700,
                         fontWeight: FontWeight.bold,
                       ),
